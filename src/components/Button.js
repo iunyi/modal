@@ -12,8 +12,12 @@ const StyledButton = styled.button`
   font-family: 'Roboto', sans-serif;
 `
 
-export default function Button() {
+export default function Button(props) {
+    const handleClick = () => {
+        props.handleClick()
+    }
+
     return (
-        <StyledButton>Modal</StyledButton>
+        <StyledButton onClick={handleClick}>Modal</StyledButton>
     )
 }
