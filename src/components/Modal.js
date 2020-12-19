@@ -1,36 +1,40 @@
-import React from 'react'
+import React, { useRef, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
+import image from '../images/photo.jpeg'
 import { MdClose } from 'react-icons/md';
 
 const Background = styled.div`
-    width: 100%;
+    width: 100vw;
     height: 100vh;
-    background: #fff;
-    position: fixed;
+    background: rgba(0, 0, 0, 0.8);
+    // position: fixed;
     display: flex;
     justify-content: center;
     align-items: center;
-`
+`;
 
 const ModalWrapper = styled.div`
-    width: 800px;
-    height: 500px;
+    width: 60vw;
+    max-width: 700px;
+    height: 450px;
     box-shadow: 0 5px 16px rgba (0, 0, 0, 0.2);
     background: #fff;
     color: #000;
-    display: grid;
-    grid-template-columns; 1fr 1fr;
-    position: relative;
+    display: flex;
+    flex-direction: column;
     z-index: 10;
     border-radius: 8px;
-`
+    overflow: hidden;
+    position: fixed;
+`;
 
 const ModalImage = styled.img`
 width: 100%;
-height: 100%;
-border-radius: 10px 0 0 10px;
+height: 50%;
+object-fit: cover;
+object-position: 100% 58%;
 background: #000;
-`
+`;
 
 const ModalContent = styled.div`
 display: flex;
@@ -50,7 +54,8 @@ button {
     color: #fff;
     border: none;
 }
-`
+`;
+
 const ModalCloseButton = styled(MdClose)`
     cursor: pointer;
     position: absolute;
@@ -59,24 +64,32 @@ const ModalCloseButton = styled(MdClose)`
     width: 32px;
     height: 32px;
     padding: 0;
-    color: blue;
-`
+`;
 
-export default function Modal(props) {
+export default function Modal(props, { displayModal, setDisplayModal }) {
+    const modalRef = useRef();
+
     const handleXClick = () => {
-        props.handleXClick()
-    }
+        props.handleXClick();
+    };
+
+    const closeModal = (e) => {
+        if (modalRef.current === e.target) {
+            props.handleXClick();
+        }
+    };
+
     return (
-        <Background>
-            <ModalWrapper>
-                <ModalImage src={require('../images/photo.jpeg')} alt="photo"/>
-                <ModalContent>
-                    <h1>Title</h1>
-                    <p>Bla bla bla</p>
-                    <button>Join now</button>
-                </ModalContent>
-                <ModalCloseButton aria-label='close modal' onClick={handleXClick} />
-            </ModalWrapper>
+        <Background ref={modalRef} onClick={closeModal}>
+                <ModalWrapper>
+                    <ModalImage src={image} alt="photo"/>
+                    <ModalContent>
+                        <h1>Title</h1>
+                        <p>Bla bla bla</p>
+                        <button>Join now</button>
+                    </ModalContent>
+                    <ModalCloseButton aria-label='close modal' onClick={handleXClick} />
+                </ModalWrapper>
         </Background>
     )
-}
+};

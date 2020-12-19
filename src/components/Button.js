@@ -9,7 +9,6 @@ const StyledButton = styled.button`
   background-color: #141414;
   color: #fff;
   font-size: 24px;
-  font-family: 'Roboto', sans-serif;
 `
 
 export default function Button(props) {
@@ -20,4 +19,4 @@ export default function Button(props) {
     return (
         <StyledButton onClick={handleClick}>Modal</StyledButton>
     )
-}
+};

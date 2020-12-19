@@ -1,7 +1,18 @@
 import React, { useState } from 'react';
+import { useSpring, animated } from 'react-spring';
 import Button from './Button';
 import Modal from './Modal';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
+
+const GlobalStyle = createGlobalStyle`
+* {
+  box-sizing: border-box;
+  margin:0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+
+}
+`
 
 const Container = styled.div`
   display: flex;
@@ -21,12 +32,32 @@ function App() {
     setDisplayModal(false)
   };
 
+  const animation = useSpring({
+    config: {
+        duration: 350
+    },
+    opacity: displayModal ? 1 : 0,
+    transform: displayModal? `translateY(0%)` : `translateY(-100%)`
+  });
+
   return (
-    <Container>
-      <Button handleClick={openModal}/>
-      { displayModal === true ? ( <Modal handleXClick={closeModal}/>) : null }
-    </Container>
+    <>
+      <GlobalStyle />
+      <Container>
+        { displayModal === true ? null : <Button handleClick={openModal}/>}
+        { displayModal === true ? 
+          (<animated.div style={animation}>
+              <Modal 
+                handleXClick={closeModal} 
+                displayModal={displayModal} 
+                setDisplayModal={setDisplayModal}
+              />
+            </animated.div>
+          ) : null 
+        }
+      </Container>
+    </>
   );
-}
+};
 
 export default App;
